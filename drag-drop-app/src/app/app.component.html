@@ -1,0 +1,71 @@
+<div class="content" role="main">
+    <div class="form-container">
+      <form [formGroup]="taskForm" (submit)="submit()">
+        <mat-form-field appearance="outline" [hideRequiredMarker]="true">
+          <mat-label>Taks Title </mat-label>
+          <input matInput type="task" formControlName="taskTitle">
+        </mat-form-field>
+        <mat-form-field appearance="outline" [hideRequiredMarker]="true">
+          <mat-label>Taks Description </mat-label>
+          <input matInput type="taskDescription" formControlName="taskDescription">
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Add</button>
+      </form>
+    </div>
+
+    <div class="list-container">
+      <div class="todo-container column-container">
+        <div class="list"
+            cdkDropList
+            #todolist="cdkDropList"
+            [cdkDropListData]="todos"
+            [cdkDropListConnectedTo]="[donelist,inprogresslist]"
+            (cdkDropListDropped)="onDrop($event)"
+            >
+          <h3>TO DO</h3>
+          <mat-card *ngFor="let todo of todos" cdkDrag>
+            <mat-card-header>
+              <mat-card-title>{{todo.taskTitle}}</mat-card-title>
+              <mat-card-subtitle>{{todo.taskDescription}}</mat-card-subtitle>
+            </mat-card-header>
+          </mat-card>
+        </div>
+      </div>
+      <div class="inprogress-container column-container">
+        <div class="list"
+            cdkDropList
+            #inprogresslist="cdkDropList"
+            [cdkDropListData]="inprogressList"
+            [cdkDropListConnectedTo]="[todolist,donelist]"
+            (cdkDropListDropped)="onDrop($event)"
+            >
+          <h3>IN PROGRESS</h3>
+          <mat-card *ngFor="let inprogress of inprogressList" cdkDrag>
+            <mat-card-header>
+              <mat-card-title>{{inprogress.taskTitle}}</mat-card-title>
+              <mat-card-subtitle>{{inprogress.taskDescription}}</mat-card-subtitle>
+            </mat-card-header>
+          </mat-card>
+        </div>
+      </div>
+      <div class="done-container column-container">
+        <div class="list"
+          cdkDropList
+          #donelist="cdkDropList"
+          [cdkDropListData]="completed"
+          [cdkDropListConnectedTo]="[inprogresslist,todolist]"
+          (cdkDropListDropped)="onDrop($event)"
+        >
+          <h3>DONE</h3>
+          <mat-card *ngFor="let complete of completed" cdkDrag>
+            <mat-card-header>
+              <mat-card-title>{{complete.taskTitle}}</mat-card-title>
+              <mat-card-subtitle>{{complete.taskDescription}}</mat-card-subtitle>
+            </mat-card-header>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+</div>
+
+<router-outlet></router-outlet>
